@@ -10,10 +10,18 @@ import br.com.projeto.jogoforca.utils.RandomUtils;
 public class Dictionary {
 
 	private static final String FILE_NAME = "dicionario.txt";
+	private static Dictionary instance;
 	private List<String> words = new ArrayList<>();
 
-	public Dictionary() {
+	private Dictionary() {
 		load();
+	}
+
+	public static Dictionary getInstance() {
+		if (instance == null) {
+			instance = new Dictionary();
+		}
+		return instance;
 	}
 
 	private void load() {

@@ -1,14 +1,17 @@
 package br.com.projeto.jogoforca.game;
 
 import br.com.projeto.jogoforca.core.Dictionary;
-import br.com.projeto.jogoforca.core.Word;
 
 public class Game {
 
 	public void start() {
-		Dictionary dictionary = new Dictionary();
-		Word word = dictionary.nextWord();
 		
-		System.out.println(word.getOriginalWord());
+		// Singleton pattern : only one instance exists in the application
+		Dictionary d1 = Dictionary.getInstance();
+		Dictionary d2 = Dictionary.getInstance();
+		
+		System.out.println(d1);
+		System.out.println(d2);
+		
 	}
 }
