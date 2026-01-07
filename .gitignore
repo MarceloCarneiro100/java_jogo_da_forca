@@ -1,0 +1,13 @@
+# Arquivos compilados
+*.class
+
+# Pasta de saída do Eclipse
+/bin/
+
+# Configurações locais do Eclipse
+.classpath
+.project
+.settings/
+
+# Saída de builds Maven/Gradle (se usar futuramente)
+/target/
