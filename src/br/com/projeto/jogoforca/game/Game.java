@@ -3,14 +3,13 @@ package br.com.projeto.jogoforca.game;
 import java.util.HashSet;
 import java.util.Set;
 
+import br.com.projeto.jogoforca.core.Config;
 import br.com.projeto.jogoforca.core.Dictionary;
 import br.com.projeto.jogoforca.core.InvalidCharacterException;
 import br.com.projeto.jogoforca.core.Word;
 import br.com.projeto.jogoforca.ui.UI;
 
 public class Game {
-
-	private static final int MAX_ERRORS = 5;
 
 	public void start() {
 
@@ -22,6 +21,9 @@ public class Game {
 
 		Set<Character> usedChars = new HashSet<>();
 		int errorCount = 0;
+
+		int maxErrors = Integer.parseInt(Config.get("maxErrors"));
+		UI.print("Você pode errar no máximo " + maxErrors + " vez(es)");
 
 		while (true) {
 			UI.print(word);
@@ -42,8 +44,8 @@ public class Game {
 				} else {
 					errorCount++;
 
-					if (errorCount < MAX_ERRORS) {
-						UI.print("Você errou! Você ainda pode errar " + (MAX_ERRORS - errorCount) + " vez(es)");
+					if (errorCount < maxErrors) {
+						UI.print("Você errou! Você ainda pode errar " + (maxErrors - errorCount) + " vez(es)");
 					}
 				}
 
@@ -55,7 +57,7 @@ public class Game {
 					break;
 				}
 
-				if (errorCount == MAX_ERRORS) {
+				if (errorCount == maxErrors) {
 					UI.print("Você perdeu o jogo! A palavra correta era: " + word.getOriginalWord());
 					UI.print("Fim do jogo!");
 					break;
