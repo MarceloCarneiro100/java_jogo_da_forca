@@ -1,17 +1,70 @@
 package br.com.projeto.jogoforca.game;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import br.com.projeto.jogoforca.core.Dictionary;
+import br.com.projeto.jogoforca.core.InvalidCharacterException;
+import br.com.projeto.jogoforca.core.Word;
+import br.com.projeto.jogoforca.ui.UI;
 
 public class Game {
 
+	private static final int MAX_ERRORS = 5;
+
 	public void start() {
-		
-		// Singleton pattern : only one instance exists in the application
-		Dictionary d1 = Dictionary.getInstance();
-		Dictionary d2 = Dictionary.getInstance();
-		
-		System.out.println(d1);
-		System.out.println(d2);
-		
+
+		UI.print("Bem vindo ao Jogo da Forca!");
+		Dictionary dictionary = Dictionary.getInstance();
+		Word word = dictionary.nextWord();
+
+		UI.print("A palavra tem " + word.size() + " letras");
+
+		Set<Character> usedChars = new HashSet<>();
+		int errorCount = 0;
+
+		while (true) {
+			UI.print(word);
+			UI.printNewLine();
+
+			char c;
+			try {
+				c = UI.readChar("Digite uma letra: ");
+
+				if (usedChars.contains(c)) {
+					throw new InvalidCharacterException("A letra '" + c + "' já foi utilizada");
+				}
+
+				usedChars.add(c);
+
+				if (word.hasChar(c)) {
+					UI.print("Você acertou uma letra!");
+				} else {
+					errorCount++;
+
+					if (errorCount < MAX_ERRORS) {
+						UI.print("Você errou! Você ainda pode errar " + (MAX_ERRORS - errorCount) + " vez(es)");
+					}
+				}
+
+				UI.printNewLine();
+
+				if (word.discovered()) {
+					UI.print("PARABÉNS! Você acertou a palavra correta: " + word.getOriginalWord());
+					UI.print("Fim do jogo!");
+					break;
+				}
+
+				if (errorCount == MAX_ERRORS) {
+					UI.print("Você perdeu o jogo! A palavra correta era: " + word.getOriginalWord());
+					UI.print("Fim do jogo!");
+					break;
+				}
+
+			} catch (InvalidCharacterException e) {
+				UI.print("Erro: " + e.getMessage());
+				UI.printNewLine();
+			}
+		}
 	}
 }
